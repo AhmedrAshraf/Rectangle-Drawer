@@ -1,10 +1,13 @@
 import "./App.css";
 import React, { useState } from "react";
-import { Stage, Layer, Rect, Text } from "react-konva";
+import { Stage, Layer, Rect } from "react-konva";
 
 function App() {
-  const [xOne, setXOne] = useState();
-  const [xTwo, setXTwo] = useState();
+  const [x, setx] = useState(0);
+  const [y, sety] = useState(0);
+  const [widthX, setWidth] = useState("");
+  const [heightY, setHeight] = useState("");
+  const [firstClick, setFirstClick] = useState(false);
 
   function handleClick(event) {
     if (!event.target.classList.contains("box")) {
@@ -23,8 +26,21 @@ function App() {
     localX -= borderWidth;
     localY -= borderWidth;
 
-    console.log("localX", localX);
-    console.log("localY", localY);
+    if (firstClick) {
+      let width = localX - x;
+      let height = localY - y;
+      setWidth(width);
+      setHeight(height);
+      setFirstClick(false);
+    } else {
+      setx(0);
+      sety(0);
+      setWidth(0);
+      setHeight(0);
+      setx(localX);
+      sety(localY);
+      setFirstClick(true);
+    }
   }
 
   return (
@@ -35,7 +51,7 @@ function App() {
         style={{ position: "absolute", top: 0, left: 0, zIndex: 3 }}
       >
         <Layer>
-          <Rect x={3} y={5} width={1020} height={813} fill="yellow" />
+          <Rect x={x} y={y} width={widthX} height={heightY} fill="gray" />
         </Layer>
       </Stage>
       <div className="box box-a" onClick={handleClick}></div>
