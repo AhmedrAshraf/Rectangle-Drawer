@@ -9,36 +9,16 @@ function App() {
   const [heightY, setHeight] = useState("");
   const [firstClick, setFirstClick] = useState(false);
 
-  function handleClick(event) {
-    if (!event.target.classList.contains("box")) {
-      return;
-    }
-
-    var viewportX = event.clientX;
-    var viewportY = event.clientY;
-    var boxRectangle = event.target.getBoundingClientRect();
-    var localX = viewportX - boxRectangle.left;
-    var localY = viewportY - boxRectangle.top;
-    var borderWidth = parseInt(
-      window.getComputedStyle(event.target).borderTopWidth,
-      10
-    );
-    localX -= borderWidth;
-    localY -= borderWidth;
-
+  function handleClick({ clientX, clientY }) {
     if (firstClick) {
-      let width = localX - x;
-      let height = localY - y;
-      setWidth(width);
-      setHeight(height);
+      setWidth(clientX - x);
+      setHeight(clientY - y);
       setFirstClick(false);
     } else {
-      setx(0);
-      sety(0);
       setWidth(0);
       setHeight(0);
-      setx(localX);
-      sety(localY);
+      setx(clientX);
+      sety(clientY);
       setFirstClick(true);
     }
   }
